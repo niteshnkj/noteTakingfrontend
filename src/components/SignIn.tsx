@@ -41,7 +41,7 @@ const SignIn: React.FC = () => {
 
     const handleSignUp = async () => {
 
-        if (!emailId || !name) {
+        if (!emailId || !name || !date) {
             toast({
                 title: "All fields are required.",
             })
@@ -62,48 +62,69 @@ const SignIn: React.FC = () => {
 
     }
     const handleSignupOtpVerify = async () => {
+        if (!otp) {
+            toast({
+                title: "otp is required.",
+            })
+        }
+
         try {
             const res = await axios.post("http://localhost:4000/api/auth/verify-otp", { emailId, otp }, { withCredentials: true })
             dispatch(addUser(res.data.data))
+            toast({
+                title: "Sign Up sucessful",
+            })
+
             navigate("/note")
 
         } catch (error) {
-            console.log(error)
+            toast({
+                title: `${error.data.message}`,
+            })
         }
     }
     //sign in and navigate to notemaking page
-    const handleVerify = async () => {
+    const handleSignIn = async () => {
 
         if (!emailId) {
-            console.log("All fields are required");
-            return;
+            toast({
+                title: "email is required.",
+            })
         }
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/signin", { emailId }, { withCredentials: true })
-            console.log(res)
-
-
+            await axios.post("http://localhost:4000/api/auth/signin", { emailId }, { withCredentials: true })
+            toast({
+                title: "An otp has been sent to your Email.",
+            })
+            setDisabled(true);
+            setDisabledotp(false);
         } catch (error) {
-            console.log(error)
+            toast({
+                title: `${error.data.message}`,
+            })
         }
 
     }
-    const handleSignIn = async () => {
+    const handleVerify = async () => {
         setDisabled(true);
         setDisabledotp(false)
-        toast({
-            title: "An otp has been sent to your Email.",
-
-        })
-        if (!emailId) {
-            console.log("All fields are required");
-            return;
+        if (!otp) {
+            toast({
+                title: "otp is required.",
+            })
         }
+
         try {
             const res = await axios.post("http://localhost:4000/api/auth/verify-signInotp", { emailId, otp }, { withCredentials: true })
-
+            dispatch(addUser(res.data.data))
+            toast({
+                title: "login sucessful",
+            })
+            navigate("/note")
         } catch (error) {
-            console.log(error)
+            toast({
+                title: `${error.data.message}`,
+            })
         }
 
 
@@ -222,7 +243,7 @@ const SignIn: React.FC = () => {
                     {otp && (
                         <button
                             className="absolute right-12 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white text-sm px-3 py-1 rounded-md focus:outline-none hover:bg-blue-600"
-                            onClick={handleSignupOtpVerify}
+                            onClick={isSignUp ? handleSignupOtpVerify : handleVerify}
                         >
                             Verify
                         </button>
@@ -256,7 +277,7 @@ const SignIn: React.FC = () => {
                     </label>
                 </div>}
                 {/* Submit Button */}
-                <Button className="w-full mb-4 bg-[#367AFF] text-white rounded-[10px] hover:bg-[#367AFF]" onClick={handleSignUp} disabled={disabled}>
+                <Button className="w-full mb-4 bg-[#367AFF] text-white rounded-[10px] hover:bg-[#367AFF]" onClick={isSignUp ? handleSignUp : handleSignIn} disabled={disabled}>
                     {isSignUp ? "Sign Up" : "Sign In"}
                 </Button>
                 {/* Separator */}
