@@ -14,75 +14,101 @@ import { GoEye, GoEyeClosed } from "react-icons/go";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import GoogleIcon from "../assets/googlebtn.png"
 import axios from "axios"
+import { useDispatch } from "react-redux";
+import { addUser } from "@/utils/userSlice";
+import { useToast } from "@/hooks/use-toast"
+import { useNavigate } from "react-router-dom";
 
 
-const SignIn:React.FC = () => {
+
+const SignIn: React.FC = () => {
     const [date, setDate] = useState<Date | null>(null);
     const [showOtp, setShowOtp] = useState<boolean>(false);
     const [isSignUp, setSignUp] = useState<boolean>(false);
     const [emailId, setEmailId] = useState<string | null>(null);
     const [name, setName] = useState<string | null>(null);
     const [otp, setOtp] = useState<string>("");
+    const { toast } = useToast()
+    const dispatch = useDispatch()
+    const [disabled, setDisabled] = useState<boolean>(false);
+    const [disabledotp, setDisabledotp] = useState<boolean>(true);
+    const navigate = useNavigate()
     const toggleOtpVisibility = () => {
-        setShowOtp((prev) => !prev); 
+        setShowOtp((prev) => !prev);
     };
 
-     //sign up and navigate to notemaking page
-     const handleSignupOtpVerify=async()=>{
+    //sign up and navigate to notemaking page
+
+    const handleSignUp = async () => {
+
+        if (!emailId || !name) {
+            toast({
+                title: "All fields are required.",
+            })
+        }
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/sendLoginOtp", {emailId}, { withCredentials: true })
-            console.log(res)
+            const res = await axios.post("http://localhost:4000/api/auth/signup", { name, dob: date, emailId }, { withCredentials: true })
+            dispatch(addUser(res.data.data))
+            toast({
+                title: "An otp has been sent to your Email.",
+            })
+            setDisabled(true);
+            setDisabledotp(false);
+        } catch (error) {
+            toast({
+                title: `${error.data.message}`,
+            })
+        }
+
+    }
+    const handleSignupOtpVerify = async () => {
+        try {
+            const res = await axios.post("http://localhost:4000/api/auth/verify-otp", { emailId, otp }, { withCredentials: true })
+            dispatch(addUser(res.data.data))
+            navigate("/note")
+
         } catch (error) {
             console.log(error)
         }
-     }
-     const handleSignUp=async()=>{
-        console.log(emailId)
-        if (!emailId ) {
-            console.log("All fields are required");
-            return;
-        }
-        try {
-            const res = await axios.post("http://localhost:4000/api/auth/signup", {name,dob,emailId,otp}, { withCredentials: true })
-            
-        } catch (error) {
-            console.log(error)
-        }
-    
-    
-    
-      }
+    }
     //sign in and navigate to notemaking page
     const handleVerify = async () => {
-        console.log(emailId)
-        if (!emailId ) {
+
+        if (!emailId) {
             console.log("All fields are required");
             return;
         }
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/sendLoginOtp", {emailId}, { withCredentials: true })
+            const res = await axios.post("http://localhost:4000/api/auth/signin", { emailId }, { withCredentials: true })
             console.log(res)
+
+
         } catch (error) {
             console.log(error)
         }
 
     }
-  const handleSignIn=async()=>{
-    console.log(emailId)
-    if (!emailId ) {
-        console.log("All fields are required");
-        return;
+    const handleSignIn = async () => {
+        setDisabled(true);
+        setDisabledotp(false)
+        toast({
+            title: "An otp has been sent to your Email.",
+
+        })
+        if (!emailId) {
+            console.log("All fields are required");
+            return;
+        }
+        try {
+            const res = await axios.post("http://localhost:4000/api/auth/verify-signInotp", { emailId, otp }, { withCredentials: true })
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+
     }
-    try {
-        const res = await axios.post("http://localhost:4000/api/auth/signin", {emailId,otp}, { withCredentials: true })
-        
-    } catch (error) {
-        console.log(error)
-    }
-
-
-
-  }
     return (
         <div className="flex justify-center items-center w-full h-screen font-inter">
             <div className="w-full max-w-md p-6 text-center lg:text-left">
@@ -101,9 +127,11 @@ const SignIn:React.FC = () => {
                         <input
                             type="text"
                             id="name"
-                            value={name||""}
+                            required
+                            value={name || ""}
                             onChange={(e) => setName(e.target.value)}
-                            className="peer w-full px-4 py-3 rounded-md border-2 bg-transparent border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            disabled={disabled}
+                            className={`peer w-full px-4 py-3 rounded-md border-2 bg-transparent border-gray-300  placeholder-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ${disabled ? 'text-gray-500' : 'text-gray-900'}`}
                         />
                         <label
                             htmlFor="name"
@@ -120,22 +148,26 @@ const SignIn:React.FC = () => {
                         <Popover>
                             <PopoverTrigger asChild>
                                 <button
-                                    className={cn(
-                                        "peer w-full px-4 py-3 rounded-md border-2 border-gray-300 text-gray-900 placeholder-transparent text-left font-normal focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                                        !date && "text-muted-foreground"
-                                    )}
+                                    className={`
+                                        peer w-full px-4 py-3 rounded-md border-2 border-gray-300 text-gray-900 placeholder-transparent text-left font-normal focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
+                                        ${!date ? 'text-muted-foreground' : ''}
+                                        ${disabled ? 'text-gray-500' : 'text-gray-900'}
+                                      `}
                                     id="dob"
                                 >
-                                    <CalendarIcon className="mr-2 h-4 w-4 inline-block" />
+                                    <CalendarIcon className={`mr-2 h-4 w-4 inline-block ${disabled ? 'text-gray-500' : 'text-gray-900'}`} />
                                     {date ? format(date, "PPP") : ""}
                                 </button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
+                            <PopoverContent className={`w-auto p-0 ${disabled ? 'text-gray-500' : 'text-gray-900'}`} align="start">
                                 <Calendar
                                     mode="single"
                                     selected={date}
                                     onSelect={(newDate) => setDate(newDate)}
                                     initialFocus
+                                    disabled={disabled}
+                                    required
+                                    className={`${disabled ? 'text-gray-500' : 'text-gray-900'}`}
                                 />
                             </PopoverContent>
                         </Popover>
@@ -154,10 +186,12 @@ const SignIn:React.FC = () => {
                     <input
                         type="email"
                         id="email"
-                        className="peer w-full px-4 py-3 bg-transparent rounded-md border-2 border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 pr-20"
+                        required
+                        className={`peer w-full px-4 py-3 rounded-md border-2 bg-transparent border-gray-300  placeholder-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ${disabled ? 'text-gray-500' : 'text-gray-900'}`}
                         placeholder="Email Address"
-                        value={emailId||""}
+                        value={emailId || ""}
                         onChange={(e) => { setEmailId(e.target.value) }}
+                        disabled={disabled}
                     />
                     <label
                         htmlFor="email"
@@ -165,14 +199,7 @@ const SignIn:React.FC = () => {
                     >
                         Email
                     </label>
-                    {emailId && (
-                        <button
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white text-sm px-3 py-1 rounded-md focus:outline-none hover:bg-blue-600"
-                            onClick={handleVerify}
-                        >
-                            Verify
-                        </button>
-                    )}
+
                 </div>
 
                 {/* OTP Input */}
@@ -183,6 +210,7 @@ const SignIn:React.FC = () => {
                         className="peer w-full px-4 py-3 rounded-md border-2 bg-transparent border-gray-300 text-gray-900 placeholder-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="OTP"
                         value={otp}
+                        disabled={disabledotp}
                         onChange={(e) => setOtp(e.target.value)}
                     />
                     <label
@@ -191,6 +219,14 @@ const SignIn:React.FC = () => {
                     >
                         OTP
                     </label>
+                    {otp && (
+                        <button
+                            className="absolute right-12 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white text-sm px-3 py-1 rounded-md focus:outline-none hover:bg-blue-600"
+                            onClick={handleSignupOtpVerify}
+                        >
+                            Verify
+                        </button>
+                    )}
                     {/* Icon to toggle OTP visibility */}
                     <div
                         className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -220,7 +256,7 @@ const SignIn:React.FC = () => {
                     </label>
                 </div>}
                 {/* Submit Button */}
-                <Button className="w-full mb-4 bg-[#367AFF] text-white rounded-[10px] hover:bg-[#367AFF]" onClick={handleSignIn}>
+                <Button className="w-full mb-4 bg-[#367AFF] text-white rounded-[10px] hover:bg-[#367AFF]" onClick={handleSignUp} disabled={disabled}>
                     {isSignUp ? "Sign Up" : "Sign In"}
                 </Button>
                 {/* Separator */}
@@ -233,7 +269,7 @@ const SignIn:React.FC = () => {
                 {/* Google Login */}
                 <Button
                     className="w-full bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    type="button"
+                    type="button" disabled={disabled}
                 >
                     {isSignUp ? "Continue with Google" : "Sign in with Google"}
                     <img src={GoogleIcon} alt="google icon" className="h-6 w-6" />
