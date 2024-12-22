@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./appStore";
 
-// Define the shape of the user state or allow it to be null
+
 interface User {
   id: string;
   name: string;
@@ -12,21 +12,21 @@ interface User {
 type UserState = User | null;
 
 
+const initialState: UserState = null;
 
 const userSlice = createSlice({
   name: "user",
-  initialState:"",
+  initialState, 
   reducers: {
     addUser: (state, action: PayloadAction<User>) => {
-        return action.payload;
-      },
-      removeUser: (state: UserState): UserState => {
-        return null;
-      },
+      return action.payload; 
+    },
+    removeUser: () => {
+      return initialState; 
+    },
   },
 });
 
-export const { addUser,removeUser } =
-  userSlice.actions;
-export const userSelector = (state: RootState) => state.userReducer;
+export const { addUser, removeUser } = userSlice.actions;
+export const userSelector = (state: RootState): UserState => state.user;
 export default userSlice.reducer;

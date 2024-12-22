@@ -15,7 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Body />}>
               <Route path="/note" element={<TaskDashboard />} />
-              <Route path="/signIn" element={<AuthPage />} />
+              <Route path="/signin" element={<AuthPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
