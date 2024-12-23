@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "@/utils/userSlice";
 import { useToast } from "@/hooks/use-toast"
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "@/utils/constants";
 
 
 
@@ -46,7 +47,7 @@ const SignIn: React.FC = () => {
             })
         }
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/signup", { name, dob: date, emailId }, { withCredentials: true })
+            const res = await axios.post(BASE_URL + "/auth/signup", { name, dob: date, emailId }, { withCredentials: true })
             dispatch(addUser(res.data.data))
             toast({
                 title: "An otp has been sent to your Email.",
@@ -68,7 +69,7 @@ const SignIn: React.FC = () => {
         }
 
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/verify-otp", { emailId, otp }, { withCredentials: true })
+            const res = await axios.post(BASE_URL + "/auth/verify-otp", { emailId, otp }, { withCredentials: true })
             dispatch(addUser(res.data.data))
             toast({
                 title: "Sign Up sucessful",
@@ -91,7 +92,7 @@ const SignIn: React.FC = () => {
             })
         }
         try {
-            await axios.post("http://localhost:4000/api/auth/signin", { emailId }, { withCredentials: true })
+            await axios.post(BASE_URL + "/auth/signin", { emailId }, { withCredentials: true })
             toast({
                 title: "An otp has been sent to your Email.",
             })
@@ -114,7 +115,7 @@ const SignIn: React.FC = () => {
         }
 
         try {
-            const res = await axios.post("http://localhost:4000/api/auth/verify-signInotp", { emailId, otp }, { withCredentials: true })
+            const res = await axios.post(BASE_URL + "/auth/verify-signInotp", { emailId, otp }, { withCredentials: true })
             dispatch(addUser(res.data.data))
             toast({
                 title: "login sucessful",

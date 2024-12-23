@@ -15,6 +15,7 @@ function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Body />}>
+            <Route path="/" element={<TaskDashboard />} />
               <Route path="/note" element={<TaskDashboard />} />
               <Route path="/signin" element={<AuthPage />} />
               <Route path="*" element={<PageNotFound />} />

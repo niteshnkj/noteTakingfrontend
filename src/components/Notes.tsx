@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { addNote, removeNote } from "@/utils/noteSlice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { BASE_URL } from "@/utils/constants";
 
 const Notes = () => {
   const dispatch = useDispatch();
@@ -23,15 +24,15 @@ const Notes = () => {
         title: "Notes fetched sucessfully",
       })
     } catch (error) {
-
+      console.log(error)
       toast({
-        title: `${error?.message}`,
+        title: "No note found.",
       })
     }
   };
   const handleDeleteNote = async (_id) => {
     try {
-      await axios.delete("http://localhost:4000/api/note/deleteNote/" + _id, { withCredentials: true, });
+      await axios.delete(BASE_URL + "/note/deleteNote/" + _id, { withCredentials: true, });
       dispatch(removeNote(_id))
       toast({
         title: "Note deleted sucessfully",
