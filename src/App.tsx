@@ -5,6 +5,7 @@ import { store } from "./utils/appStore.ts"
 import TaskDashboard from "./components/TaskDashboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthPage from "./components/AuthPage.tsx";
+import PageNotFound from "./components/PageNotFound.tsx";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Body />}>
               <Route path="/note" element={<TaskDashboard />} />
               <Route path="/signin" element={<AuthPage />} />
+              <Route path="*" element={<PageNotFound />} />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -5,6 +5,7 @@ import { removeUser } from "@/utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useSelector } from "react-redux";
+import { clearNote } from "@/utils/noteSlice";
 
 const NavBar = () => {
   const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const NavBar = () => {
     try {
       await axios.post("http://localhost:4000/api/auth/logout", {}, { withCredentials: true })
       dispatch(removeUser())
+      dispatch(clearNote())
       navigate("/signin")
     } catch (error) {
       toast({
