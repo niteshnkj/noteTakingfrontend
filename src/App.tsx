@@ -23,10 +23,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </Provider>
-
       <Toaster />
-
-
     </>
   );
 }

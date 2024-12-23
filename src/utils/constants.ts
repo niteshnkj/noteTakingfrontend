@@ -1,1 +1,1 @@
-export const BASE_URL="https://notetakingbackend-hxec.onrender.com/api"
+export const BASE_URL="https://notetakingbackend-hxec.onrender.com"

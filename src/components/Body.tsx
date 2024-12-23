@@ -13,28 +13,45 @@ const Body = () => {
     const navigate = useNavigate();
 
     const user = useSelector((store: RootState) => store.user.user);
+
+    // console.log(user?.isVerified)
     const fetchUser = async () => {
+
         try {
+            if (user?.isVerified) {
+                return navigate("/note")
+            }
             if (user) return;
-            const res = await axios.get(BASE_URL + "/profile/view", {
+
+
+            const res = await axios.get(BASE_URL + "/api/profile/view", {
                 withCredentials: true,
             });
             dispatch(addUser(res?.data.data));
-            navigate("/note")
         } catch (error) {
+            // console.log(error)
             if (
                 typeof error === "object" &&
                 error &&
                 "status" in error &&
                 typeof error.status === "number"
-            ) {
-                if (error.status === 401) {
-                    navigate("/signin");
-                }
+            ) 
+            if(error.status === 401) {
+                navigate("/signin");
             }
+
+            // if (
+            //     typeof error === "object" &&
+            //     error &&
+            //     "status" in error &&
+            //     typeof error.status === "number"
+            // ) {
+
         }
-    };
+    }
+    // };
     useEffect(() => {
+
         fetchUser();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

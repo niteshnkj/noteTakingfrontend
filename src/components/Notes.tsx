@@ -22,7 +22,7 @@ const Notes = () => {
   // get notes
   const fetchNotes = async () => {
     try {
-      const res = await axios.get(BASE_URL + "/note/getNotes", {
+      const res = await axios.get(BASE_URL + "/api/note/getNotes", {
         withCredentials: true,
       });
       console.log("ye res wala", res?.data.note)
@@ -39,7 +39,7 @@ const Notes = () => {
   };
   const handleDeleteNote = async (_id: string) => {
     try {
-      await axios.delete(BASE_URL + "/note/deleteNote/" + _id, { withCredentials: true, });
+      await axios.delete(BASE_URL + "/api/note/deleteNote/" + _id, { withCredentials: true, });
       dispatch(removeNote(_id))
       toast({
         title: "Note deleted sucessfully",
