@@ -7,13 +7,12 @@ import { useSelector } from "react-redux";
 import { clearNote } from "@/utils/noteSlice";
 import { BASE_URL } from "@/utils/constants";
 import { RootState } from "@/utils/appStore";
+import { useToast } from "@/hooks/use-toast";
 
 const NavBar = () => {
-
-
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { toast } = useToast()
   const user = useSelector((store: RootState) => store.user.user);
   const handlelogout = async () => {
     try {
@@ -27,6 +26,9 @@ const NavBar = () => {
       navigate("/signin");
     } catch (error) {
       console.log(error);
+      toast({
+        title: "error while logout",
+      })
 
     }
   };

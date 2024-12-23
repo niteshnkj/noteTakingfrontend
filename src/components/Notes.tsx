@@ -25,7 +25,7 @@ const Notes = () => {
       const res = await axios.get(BASE_URL + "/note/getNotes", {
         withCredentials: true,
       });
-      console.log(res?.data.note)
+      console.log("ye res wala", res?.data.note)
       dispatch(addNote(res?.data.note))
       toast({
         title: "Notes fetched sucessfully",
@@ -46,6 +46,9 @@ const Notes = () => {
       })
     } catch (error) {
       console.log(error)
+      toast({
+        title: "Note deleted sucessfully",
+      })
     }
   }
 
@@ -58,7 +61,7 @@ const Notes = () => {
   return (
     <div>
       <CardTitle className="text:xl md:text-3xl font-bold">Notes</CardTitle>
-      { note.map((notes: Note) => {
+      {note.map((notes: Note) => {
         return (<Card className="flex items-center justify-between p-4 space-x-4" key={notes._id}>
           <CardContent >
             <p >{notes?.title}</p>

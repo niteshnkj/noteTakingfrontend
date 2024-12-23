@@ -30,6 +30,9 @@ const CreateNote = () => {
             setNote("");
         } catch (error) {
             console.log(error)
+            toast({
+                title: "error while creating note",
+            })
 
         }
     }
