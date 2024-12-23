@@ -26,14 +26,16 @@ const NavBar = () => {
       })
     }
   }
-  if (!user) return;
+
   return (
-    <div className="flex justify-center items-center bg-gray-50 relative lg:absolute lg:top-8 lg:left-12 lg:z-10 lg:max-h-screen lg:bg-transparent">
-      <div className="flex gap-2 items-center transform translate-y-40 lg:translate-y-0 ">
+    <div className="flex justify-between items-center bg-gray-50 relative md:absolute md:top-8 md:left-12 md:z-10 md:max-h-screen md:bg-transparent">
+      <div className="flex gap-2 items-center transform translate-y-40 translate-x-36 md:translate-x-20  md:translate-y-0 ">
         <img src={logo} alt="logo" className="lg:h-8 lg:w-8 h-12 w-12" />
-        <h1 className="text-black font-bold lg:text-2xl text-4xl">{user.isVerified ? "Dashboard" : "HD"}</h1>
+        <h1 className="text-black font-bold md:text-2xl text-4xl">{user && user.isVerified ? "Dashboard" : "HD"}</h1>
       </div>
-      {user.isVerified && <p className="absolute top-4 right-4 text-blue-500 underline cursor-pointer font-semibold" onClick={handlelogout}>Sign Out</p>}
+      <div className="absolute right-4 top-4">
+        {user && user.isVerified && <p className="  text-blue-500 underline cursor-pointer font-semibold" onClick={handlelogout}>Sign Out</p>}
+      </div>
     </div>
   );
 };

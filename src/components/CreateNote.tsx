@@ -12,29 +12,26 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 
 import axios from "axios"
-import { addNote } from "@/utils/noteSlice"
+
 import { useDispatch } from "react-redux"
 import { useToast } from "@/hooks/use-toast"
 
 const CreateNote = () => {
     const [note, setNote] = useState("")
-    const dispatch = useDispatch()
     const { toast } = useToast()
 
     // create note api call
-
     const handleCreateNote = async () => {
-
         try {
             if (!note) return;
-            const res = await axios.post("http://localhost:4000/api/note/createNote", { title: note }, { withCredentials: true });
-            // dispatch(addNote(res?.data.noteData));
+            await axios.post("http://localhost:4000/api/note/createNote", { title: note }, { withCredentials: true });
             toast({
                 title: "Note Created Sucessfully",
             })
+            setNote("");
         } catch (error) {
             toast({
-                title: `${error.data.message}`,
+                title: `${error?.message}`,
             })
 
         }

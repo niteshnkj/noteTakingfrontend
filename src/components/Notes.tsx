@@ -12,14 +12,13 @@ const Notes = () => {
   const dispatch = useDispatch();
   const note = useSelector((store) => store.note);
   const { toast } = useToast()
-  //get notes
+  // get notes
   const fetchNotes = async () => {
     try {
       const res = await axios.get("http://localhost:4000/api/note/getNotes", {
         withCredentials: true,
       });
-      console.log(res?.data.noteData)
-      dispatch(addNote(res?.data.noteData));
+      dispatch(addNote(res?.data.note))
       toast({
         title: "Notes fetched sucessfully",
       })
@@ -32,9 +31,11 @@ const Notes = () => {
   };
   const handleDeleteNote = async (_id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/note/deleteNote/" + _id, { withCredentials: true, });
+      await axios.delete("http://localhost:4000/api/note/deleteNote/" + _id, { withCredentials: true, });
       dispatch(removeNote(_id))
-
+      toast({
+        title: "Note deleted sucessfully",
+      })
     } catch (error) {
       console.log(error)
     }
@@ -45,16 +46,15 @@ const Notes = () => {
     fetchNotes();
   }, [])
   if (!note) return <p> "Transform your fleeting thoughts into lasting treasures—start writing your notes today!" </p>
-  // console.log(note.noteData)
   return (
     <div>
-      <CardTitle className="text-3xl font-bold">Notes</CardTitle>
-      {note.map((note) => {
-        return (<Card className="flex items-center justify-between p-4 space-x-4" key={note?._id}>
-          <CardContent>
-            <p >{note?.title}</p>
+      <CardTitle className="text:xl md:text-3xl font-bold">Notes</CardTitle>
+      {note.map((notes) => {
+        return (<Card className="flex items-center justify-between p-4 space-x-4" key={notes._id}>
+          <CardContent >
+            <p >{notes?.title}</p>
           </CardContent>
-          <Button className="bg-white" onClick={() => handleDeleteNote(note._id)}>
+          <Button className="bg-white" onClick={() => handleDeleteNote(notes._id)}>
             <RiDeleteBin6Line size={20} className="text-black" />
           </Button>
         </Card>)
