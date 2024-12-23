@@ -23,15 +23,13 @@ const CreateNote = () => {
     const handleCreateNote = async () => {
         try {
             if (!note) return;
-            await axios.post(BASE_URL+"/note/createNote", { title: note }, { withCredentials: true });
+            await axios.post(BASE_URL + "/note/createNote", { title: note }, { withCredentials: true });
             toast({
                 title: "Note Created Sucessfully",
             })
             setNote("");
         } catch (error) {
-            toast({
-                title: `${error?.message}`,
-            })
+            console.log(error)
 
         }
     }

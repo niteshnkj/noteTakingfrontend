@@ -22,7 +22,7 @@ import { BASE_URL } from "@/utils/constants";
 
 
 const SignIn: React.FC = () => {
-    const [date, setDate] = useState<Date | null>(null);
+    const [date, setDate] = useState<Date | null>(new Date());
     const [showOtp, setShowOtp] = useState<boolean>(false);
     const [isSignUp, setSignUp] = useState<boolean>(false);
     const [emailId, setEmailId] = useState<string | null>(null);
@@ -55,9 +55,17 @@ const SignIn: React.FC = () => {
             setDisabled(true);
             setDisabledotp(false);
         } catch (error) {
-            toast({
-                title: `${error.data.message}`,
-            })
+
+            if (
+                typeof error === "object" &&
+                error &&
+                "message" in error &&
+                typeof error.message === "string"
+            ) {
+                toast({
+                    title: `${error.message}`,
+                })
+            }
         }
 
     }
@@ -78,9 +86,16 @@ const SignIn: React.FC = () => {
             navigate("/note")
 
         } catch (error) {
-            toast({
-                title: `${error.data.message}`,
-            })
+            if (
+                typeof error === "object" &&
+                error &&
+                "message" in error &&
+                typeof error.message === "string"
+            ) {
+                toast({
+                    title: `${error.message}`,
+                })
+            }
         }
     }
     //sign in and navigate to notemaking page
@@ -99,9 +114,16 @@ const SignIn: React.FC = () => {
             setDisabled(true);
             setDisabledotp(false);
         } catch (error) {
-            toast({
-                title: `${error.data.message}`,
-            })
+            if (
+                typeof error === "object" &&
+                error &&
+                "message" in error &&
+                typeof error.message === "string"
+            ) {
+                toast({
+                    title: `${error.message}`,
+                })
+            }
         }
 
     }
@@ -122,9 +144,16 @@ const SignIn: React.FC = () => {
             })
             navigate("/note")
         } catch (error) {
-            toast({
-                title: `${error.data.message}`,
-            })
+            if (
+                typeof error === "object" &&
+                error &&
+                "message" in error &&
+                typeof error.message === "string"
+            ) {
+                toast({
+                    title: `${error.message}`,
+                })
+            }
         }
 
 
@@ -183,8 +212,14 @@ const SignIn: React.FC = () => {
                             <PopoverContent className={`w-auto p-0 ${disabled ? 'text-gray-500' : 'text-gray-900'}`} align="start">
                                 <Calendar
                                     mode="single"
-                                    selected={date}
-                                    onSelect={(newDate) => setDate(newDate)}
+                                    selected={date ?? undefined}
+                                    onSelect={(newDate) => {
+                                        if (newDate) {
+                                            setDate(newDate);
+                                        } else {
+                                            setDate(null);
+                                        }
+                                    }}
                                     initialFocus
                                     disabled={disabled}
                                     required

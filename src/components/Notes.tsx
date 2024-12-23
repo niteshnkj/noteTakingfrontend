@@ -8,17 +8,24 @@ import { addNote, removeNote } from "@/utils/noteSlice";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "@/utils/constants";
+import { RootState } from "@/utils/appStore";
 
+interface Note {
+  _id: string;
+  title: string;
+}
 const Notes = () => {
   const dispatch = useDispatch();
-  const note = useSelector((store) => store.note);
+  const note = useSelector((store: RootState) => store.note);
+  console.log("ye store se aya haui", note);
   const { toast } = useToast()
   // get notes
   const fetchNotes = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/note/getNotes", {
+      const res = await axios.get(BASE_URL + "/note/getNotes", {
         withCredentials: true,
       });
+      console.log(res?.data.note)
       dispatch(addNote(res?.data.note))
       toast({
         title: "Notes fetched sucessfully",
@@ -30,7 +37,7 @@ const Notes = () => {
       })
     }
   };
-  const handleDeleteNote = async (_id) => {
+  const handleDeleteNote = async (_id: string) => {
     try {
       await axios.delete(BASE_URL + "/note/deleteNote/" + _id, { withCredentials: true, });
       dispatch(removeNote(_id))
@@ -45,12 +52,13 @@ const Notes = () => {
 
   useEffect(() => {
     fetchNotes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   if (!note) return <p> "Transform your fleeting thoughts into lasting treasures—start writing your notes today!" </p>
   return (
     <div>
       <CardTitle className="text:xl md:text-3xl font-bold">Notes</CardTitle>
-      {note.map((notes) => {
+      { note.map((notes: Note) => {
         return (<Card className="flex items-center justify-between p-4 space-x-4" key={notes._id}>
           <CardContent >
             <p >{notes?.title}</p>

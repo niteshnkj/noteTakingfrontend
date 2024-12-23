@@ -2,17 +2,19 @@ import axios from "axios";
 import logo from "../assets/logo.png";
 import { useDispatch } from "react-redux";
 import { removeUser } from "@/utils/userSlice";
-import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { clearNote } from "@/utils/noteSlice";
 import { BASE_URL } from "@/utils/constants";
+import { RootState } from "@/utils/appStore";
 
 const NavBar = () => {
+
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const user = useSelector((store) => store.user);
+  const user = useSelector((store: RootState) => store.user.user);
   const handlelogout = async () => {
     try {
       await axios.post(
@@ -25,11 +27,10 @@ const NavBar = () => {
       navigate("/signin");
     } catch (error) {
       console.log(error);
-      toast({
-        title: `${error.message}`,
-      });
+
     }
   };
+
 
   return (
     <div className={`flex justify-between items-center relative ${user && user ? "bg-transparent" : "bg-gray-50"

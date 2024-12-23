@@ -10,9 +10,11 @@ import { useSelector } from "react-redux";
 
 
 import CreateNote from "./CreateNote";
+import { RootState } from "@/utils/appStore";
 
 const TaskDashboard = () => {
-  const user = useSelector(store => store.user)  
+  
+  const user = useSelector((store: RootState) => store.user.user)
   if (!user) return;
   return (
     <div className="flex justify-center items-center w-full h-screen font-inter">
