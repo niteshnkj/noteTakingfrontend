@@ -7,8 +7,7 @@ import {
 
 import Notes from "./Notes";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import { addNote } from "@/utils/noteSlice";
+
 
 import CreateNote from "./CreateNote";
 
@@ -16,6 +15,9 @@ const TaskDashboard = () => {
   const user = useSelector(store => store.user)
 
 
+
+
+  
   if (!user) return;
   return (
     <div className="flex justify-center items-center w-full h-screen font-inter">

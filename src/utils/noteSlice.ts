@@ -21,8 +21,9 @@ const noteSlice = createSlice({
       return action.payload; 
     },
    
-    removeNote: () => {
-      return initialState;
+    removeNote: (state, action: PayloadAction<Note>) => {
+        const newArray = state.filter((n) => n._id !== action.payload);
+        return newArray;
     },
     clearNote:()=>{
         return initialState; 

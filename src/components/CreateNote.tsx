@@ -27,7 +27,8 @@ const CreateNote = () => {
 
         try {
             if (!note) return;
-            await axios.post("http://localhost:4000/api/note/createNote", { title: note }, { withCredentials: true });
+            const res = await axios.post("http://localhost:4000/api/note/createNote", { title: note }, { withCredentials: true });
+            // dispatch(addNote(res?.data.noteData));
             toast({
                 title: "Note Created Sucessfully",
             })
