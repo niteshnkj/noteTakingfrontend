@@ -9,13 +9,15 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-import { useState } from "react"
+import { FC, useState } from "react"
 
 import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
 import { BASE_URL } from "@/utils/constants"
-
-const CreateNote = () => {
+type CreateNoteProps = {
+    onNoteCreated: () => void;
+};
+const CreateNote: FC<CreateNoteProps> = ({ onNoteCreated }) => {
     const [note, setNote] = useState("")
     const { toast } = useToast()
 
@@ -28,6 +30,7 @@ const CreateNote = () => {
                 title: "Note Created Sucessfully",
             })
             setNote("");
+            onNoteCreated(); 
         } catch (error) {
             console.log(error)
             toast({

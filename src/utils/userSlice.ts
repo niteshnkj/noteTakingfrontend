@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "./appStore";
-
-interface User {
+export type User ={
   id: string;
   name: string;
   dob: Date;
@@ -10,8 +8,8 @@ interface User {
 }
 
 
-interface UserState {
-  user: User | null; 
+type UserState ={
+  user: User|null ;
 }
 
 const initialState: UserState = {
@@ -23,10 +21,10 @@ const userSlice = createSlice({
   initialState, 
   reducers: {
    
-    addUser: (state, action: PayloadAction<User>) => {
+    addUser(state, action: PayloadAction<User>){
       state.user = action.payload; 
     },
-    removeUser: (state) => {
+    removeUser(state){
       state.user = null; 
     },
   },
@@ -34,8 +32,4 @@ const userSlice = createSlice({
 
 
 export const { addUser, removeUser } = userSlice.actions;
-
-
-export const userSelector = (state: RootState): UserState => state.user;
-
 export default userSlice.reducer;

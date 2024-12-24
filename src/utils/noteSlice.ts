@@ -1,41 +1,34 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "./appStore";
 
 // Define the Note type
-export interface Note {
+export type Note = {
   _id: string;
   title: string;
-}
+};
 
-const initialState: Array<Note> = []
+type NotesArray = {
+  notes: Array<Note>;
+};
+
+const initialState: NotesArray = {
+  notes: [],
+};
 
 const noteSlice = createSlice({
-  name: "note",
+  name: "notes",
   initialState,
   reducers: {
-    addNote: (state, action: PayloadAction<Note[]>) => {
-      const uniqueNotes = [
-        ...state,
-        ...action.payload.filter(
-          (newNote) => !state.find((existingNote) => existingNote._id === newNote._id)
-        ),
-      ];
-      return uniqueNotes;
+    addNote(state, action: PayloadAction<Array<Note>>) {
+      state.notes = action.payload;
     },
-    
-    removeNote: (state, action: PayloadAction<string>) => {
-     
-      return state.filter((note) => note._id !== action.payload);
+    removeNote(state, action: PayloadAction<string>) {
+      state.notes = state.notes.filter((note) => note._id !== action.payload);
     },
-    clearNote: () => {
-      return []; 
-    }
+    clearNote(state) {
+      state.notes = [];
+    },
   },
 });
 
 export const { addNote, removeNote, clearNote } = noteSlice.actions;
-
-// Selector to get notes from the state
-export const userSelector = (state: RootState) => state.note;
-
 export default noteSlice.reducer;

@@ -38,7 +38,7 @@ const NavBar = () => {
     <div className={`flex justify-between items-center relative ${user && user ? "bg-transparent" : "bg-gray-50"
       }`}>
 
-      <div className="flex gap-2 items-center transform translate-y-40 translate-x-36 md:translate-x-28  md:translate-y-16 ">
+      <div className="flex gap-2 items-center transform translate-y-36 translate-x-40 md:translate-x-28  md:translate-y-16 ">
         <img src={logo} alt="logo" className="lg:h-8 lg:w-8 h-12 w-12" />
         <p className="text-black font-bold md:text-2xl text-xl">
           {user && user.isVerified ? "Dashboard" : "HD"}

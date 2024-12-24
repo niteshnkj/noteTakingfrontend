@@ -11,10 +11,17 @@ import { useSelector } from "react-redux";
 
 import CreateNote from "./CreateNote";
 import { RootState } from "@/utils/appStore";
+import { useState } from "react";
 
 const TaskDashboard = () => {
-  
+
+
   const user = useSelector((store: RootState) => store.user.user)
+  const [refreshNotes, setRefreshNotes] = useState(false);
+
+  const triggerRefresh = () => {
+    setRefreshNotes((prev) => !prev);
+  };
   if (!user) return;
   return (
     <div className="flex justify-center items-center w-full h-screen font-inter">
@@ -31,11 +38,11 @@ const TaskDashboard = () => {
         </Card>
 
         {/* Create Note Button */}
-        <CreateNote />
+        <CreateNote onNoteCreated={triggerRefresh} />
 
         {/* Notes Section */}
         <div>
-          <Notes />
+          <Notes refreshNotes={refreshNotes} />
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
     const toggleOtpVisibility = () => {
         setShowOtp((prev) => !prev);
     };
-
+    console.log(date)
     //sign up and navigate to notemaking page
 
     const handleSignUp = async () => {
@@ -47,8 +47,8 @@ const SignIn: React.FC = () => {
             })
         }
         try {
-            const res = await axios.post(BASE_URL + "/api/auth/signup", { name, dob: date, emailId }, { withCredentials: true })
-            dispatch(addUser(res.data.data))
+            await axios.post(BASE_URL + "/api/auth/signup", { name, dob: date, emailId }, { withCredentials: true })
+            // dispatch(addUser(res.data.data))
             toast({
                 title: "An otp has been sent to your Email.",
             })
@@ -63,7 +63,7 @@ const SignIn: React.FC = () => {
                 typeof error.message === "string"
             ) {
                 toast({
-                    title: `${error.message}`,
+                    title: `Invalid name or dob or email,`,
                 })
             }
         }
@@ -91,7 +91,7 @@ const SignIn: React.FC = () => {
                 typeof error.message === "string"
             ) {
                 toast({
-                    title: `${error.message}`,
+                    title: `Invalid otp.`,
                 })
             }
         }
@@ -119,7 +119,7 @@ const SignIn: React.FC = () => {
                 typeof error.message === "string"
             ) {
                 toast({
-                    title: `${error.message}`,
+                    title: `Invalid Email.`,
                 })
             }
         }
@@ -149,7 +149,7 @@ const SignIn: React.FC = () => {
                 typeof error.message === "string"
             ) {
                 toast({
-                    title: `${error.message}`,
+                    title: `Invalid otp`,
                 })
             }
         }
