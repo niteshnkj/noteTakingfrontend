@@ -36,7 +36,7 @@ const SignIn: React.FC = () => {
     const toggleOtpVisibility = () => {
         setShowOtp((prev) => !prev);
     };
-    console.log(date)
+    // console.log(date)
     //sign up and navigate to notemaking page
 
     const handleSignUp = async () => {
