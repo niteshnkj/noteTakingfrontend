@@ -1,9 +1,9 @@
-import { Suspense } from "react"
 import SignIn from "./SignIn"
-import Skeleton from "./Skeleton"
+
 const AuthPage = () => {
+ 
   return (
-    <Suspense fallback={<Skeleton />}>
+    
       <div className="flex h-screen bg-gray-50">
         <div className="w-full h-full lg:w-2/4 flex flex-col justify-center items-center px:2 lg:px-10">
           <SignIn />
@@ -16,7 +16,7 @@ const AuthPage = () => {
           />
         </div>
       </div>
-    </Suspense>
+   
   )
 }
 
