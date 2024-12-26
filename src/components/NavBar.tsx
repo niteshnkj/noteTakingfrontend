@@ -1,5 +1,4 @@
 import axios from "axios";
-import logo from "../assets/logo.png";
 import { useDispatch } from "react-redux";
 import { removeUser } from "@/utils/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +38,7 @@ const NavBar = () => {
       }`}>
 
       <div className="flex gap-2 items-center transform translate-y-36 translate-x-40 md:translate-x-28  md:translate-y-16 ">
-        <img src={logo} alt="logo" className="lg:h-8 lg:w-8 h-12 w-12" />
+        <img src="https://res.cloudinary.com/do9s5cxxl/image/upload/v1735205813/logo_oydo7v.png" alt="logo" className="lg:h-8 lg:w-8 h-12 w-12" />
         <p className="text-black font-bold md:text-2xl text-xl">
           {user && user.isVerified ? "Dashboard" : "HD"}
         </p>

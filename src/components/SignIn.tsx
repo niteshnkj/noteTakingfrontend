@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/popover";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { Checkbox } from "@radix-ui/react-checkbox";
-import GoogleIcon from "../assets/googlebtn.png"
 import axios from "axios"
 import { useDispatch } from "react-redux";
 import { addUser } from "@/utils/userSlice";
@@ -325,7 +324,7 @@ const SignIn: React.FC = () => {
                     type="button" disabled={disabled}
                 >
                     {isSignUp ? "Continue with Google" : "Sign in with Google"}
-                    <img src={GoogleIcon} alt="google icon" className="h-6 w-6" />
+                    <img src="https://res.cloudinary.com/do9s5cxxl/image/upload/v1735205813/googlebtn_ixu0sq.png" alt="google icon" className="h-6 w-6" />
                 </Button>
 
                 {/* Footer */}

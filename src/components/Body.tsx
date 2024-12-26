@@ -7,6 +7,8 @@ import { addUser } from "@/utils/userSlice";
 import { useEffect } from "react";
 import { BASE_URL } from "@/utils/constants";
 import { RootState } from "@/utils/appStore";
+
+// import { lazy } from 'react';
 const Body = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
