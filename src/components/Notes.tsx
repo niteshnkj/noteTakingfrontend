@@ -31,7 +31,7 @@ const Notes: FC<NotesProps> = ({ refreshNotes }) => {
     } catch (error) {
       console.log(error)
       toast({
-        title: "No note found.",
+        title: "Start writing a note today",
       })
     }
   };

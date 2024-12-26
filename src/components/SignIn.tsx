@@ -22,7 +22,7 @@ import { BASE_URL } from "@/utils/constants";
 
 
 const SignIn: React.FC = () => {
-    const [date, setDate] = useState<Date | null>(new Date());
+    const [date, setDate] = useState<Date | undefined>(new Date())
     const [showOtp, setShowOtp] = useState<boolean>(false);
     const [isSignUp, setSignUp] = useState<boolean>(false);
     const [emailId, setEmailId] = useState<string | null>(null);
@@ -59,12 +59,15 @@ const SignIn: React.FC = () => {
             if (
                 typeof error === "object" &&
                 error &&
-                "message" in error &&
-                typeof error.message === "string"
+                "status" in error &&
+                typeof error.status === "number"
             ) {
-                toast({
-                    title: `Invalid name or dob or email,`,
-                })
+                if (error.status === 400) {
+                    toast({
+                        title: "User already registered. Please SignIn.",
+                    })
+                    setSignUp(false)
+                }
             }
         }
 
@@ -197,7 +200,7 @@ const SignIn: React.FC = () => {
                             <PopoverTrigger asChild>
                                 <button
                                     className={`
-                                        peer w-full px-4 py-3 rounded-md border-2 border-gray-300 text-gray-900 placeholder-transparent text-left font-normal focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
+                                        peer w-full px-4 py-3 rounded-md border-2 border-gray-300 placeholder-transparent text-left font-normal focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
                                         ${!date ? 'text-muted-foreground' : ''}
                                         ${disabled ? 'text-gray-500' : 'text-gray-900'}
                                       `}
@@ -210,16 +213,12 @@ const SignIn: React.FC = () => {
                             <PopoverContent className={`w-auto p-0 ${disabled ? 'text-gray-500' : 'text-gray-900'}`} align="start">
                                 <Calendar
                                     mode="single"
-                                    selected={date ?? undefined}
-                                    onSelect={(newDate) => {
-                                        if (newDate) {
-                                            setDate(newDate);
-                                        } else {
-                                            setDate(null);
-                                        }
-                                    }}
+                                    selected={date}
+                                    onSelect={setDate}
                                     initialFocus
-                                    disabled={disabled}
+                                    disabled={(date) =>
+                                        date > new Date() || date < new Date("1900-01-01")
+                                    }
                                     required
                                     className={`${disabled ? 'text-gray-500' : 'text-gray-900'}`}
                                 />
