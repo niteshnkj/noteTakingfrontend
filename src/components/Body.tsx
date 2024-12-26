@@ -4,9 +4,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { addUser } from "@/utils/userSlice";
-import { useEffect } from "react";
+import {  useEffect } from "react";
 import { BASE_URL } from "@/utils/constants";
 import { RootState } from "@/utils/appStore";
+
 
 // import { lazy } from 'react';
 const Body = () => {
@@ -43,8 +44,12 @@ const Body = () => {
 
     return (
         <div>
+
             <NavBar />
-            <Outlet />
+            
+                <Outlet />
+
+           
         </div>
     );
 };
